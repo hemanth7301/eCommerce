@@ -1,5 +1,7 @@
 package com.eCommerce.Order.order;
 
+import com.eCommerce.Order.kafka.OrderConfirmation;
+import com.eCommerce.Order.kafka.OrderProducer;
 import com.eCommerce.Order.customer.CustomerClient;
 import com.eCommerce.Order.exception.BusinessException;
 import com.eCommerce.Order.orderline.OrderLineRequest;
@@ -22,7 +24,7 @@ public class OrderService {
     private final OrderRepository repository;
     private final OrderMapper mapper;
     private final OrderLineService orderLineService;
-
+    private final OrderProducer orderProducer;
     @Transactional
     public Integer createOrder(OrderRequest request) {
         var customer = this.customerClient.findCustomerById(request.customerId())
@@ -35,6 +37,12 @@ public class OrderService {
         for(PurchaseRequest purchaseRequest: request.products()){
             orderLineService.saveOrderLine(new OrderLineRequest(null,order.getId(),purchaseRequest.productID(), purchaseRequest.quantity()));
         }
+
+        orderProducer.sendOrderConfirmation(new OrderConfirmation(request.reference(),
+                request.amount(),
+                request.paymentMethod(),
+                customer,
+                purchasedProducts));
 
         return order.getId();
     }
