@@ -1,5 +1,5 @@
 server:
-  port: 8050
+  port: 8070
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -14,6 +14,6 @@ spring:
     show-sql: true
 application:
   config:
-    customer-url: http://localhost:8222/api/v1/customers
+    customer-url: http://localhost:8080/api/v1/customers
     payment-url: http://localhost:8222/api/v1/payments
-    product-url: http://localhost:8222/api/v1/products
+    product-url: http://localhost:8050/api/v1/products
