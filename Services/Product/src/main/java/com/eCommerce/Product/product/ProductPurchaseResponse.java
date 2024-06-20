@@ -3,7 +3,7 @@ package com.eCommerce.Product.product;
 import java.math.BigDecimal;
 
 public record ProductPurchaseResponse(
-        Integer productId,
+        Integer productID,
         String name,
         String description,
         BigDecimal price,
