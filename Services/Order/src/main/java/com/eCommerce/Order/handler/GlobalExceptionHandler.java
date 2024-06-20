@@ -1,5 +1,6 @@
 package com.eCommerce.Order.handler;
 
+import com.eCommerce.Order.exception.BusinessException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,5 +36,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(BAD_REQUEST)
                 .body(new ErrorResponse(errors));
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<String> handle(BusinessException exp) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(exp.getMsg());
     }
 }
