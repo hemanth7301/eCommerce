@@ -6,6 +6,8 @@ import com.eCommerce.Order.customer.CustomerClient;
 import com.eCommerce.Order.exception.BusinessException;
 import com.eCommerce.Order.orderline.OrderLineRequest;
 import com.eCommerce.Order.orderline.OrderLineService;
+import com.eCommerce.Order.payment.PaymentClient;
+import com.eCommerce.Order.payment.PaymentRequest;
 import com.eCommerce.Order.product.ProductClient;
 import com.eCommerce.Order.product.PurchaseRequest;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,6 +27,7 @@ public class OrderService {
     private final OrderMapper mapper;
     private final OrderLineService orderLineService;
     private final OrderProducer orderProducer;
+    private final PaymentClient paymentClient;
     @Transactional
     public Integer createOrder(OrderRequest request) {
         var customer = this.customerClient.findCustomerById(request.customerId())
@@ -37,6 +40,16 @@ public class OrderService {
         for(PurchaseRequest purchaseRequest: request.products()){
             orderLineService.saveOrderLine(new OrderLineRequest(null,order.getId(),purchaseRequest.productID(), purchaseRequest.quantity()));
         }
+
+        var paymentRequest= new PaymentRequest(
+                request.amount(),
+                request.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer
+        );
+
+        paymentClient.requestOrderPayment(paymentRequest);
 
         orderProducer.sendOrderConfirmation(new OrderConfirmation(request.reference(),
                 request.amount(),
