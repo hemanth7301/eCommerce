@@ -1,6 +1,6 @@
 package com.eCommerce.Payment.payment;
 
-import com.eCommerce.Payment.kafka.NotificationProducer;
+import com.eCommerce.Payment.kafka.PaymentProducer;
 import com.eCommerce.Payment.kafka.PaymentNotificationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class PaymentService {
     private final PaymentRepository repository;
     private final PaymentMapper mapper;
-    private final NotificationProducer producer;
+    private final PaymentProducer producer;
 
     public Integer createPayment(PaymentRequest request){
         var payment= this.repository.save(mapper.toPayment(request));
