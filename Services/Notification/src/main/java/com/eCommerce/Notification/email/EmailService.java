@@ -3,7 +3,7 @@ package com.eCommerce.Notification.email;
 import com.eCommerce.Notification.kafka.order.Product;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -22,7 +22,7 @@ import static com.eCommerce.Notification.email.EmailTemplate.PAYMENT_CONFIRMATIO
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class EmailService {
 
